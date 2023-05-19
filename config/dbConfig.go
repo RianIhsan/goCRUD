@@ -34,7 +34,7 @@ func BootDatabase() {
 	}
 	//Check default Database HOST
 	if dbHostEnv := os.Getenv("DB_HOST"); dbHostEnv != "" {
-		db_pass = dbHostEnv
+		db_host = dbHostEnv
 	}
 	//Check Default Database PORT
 	if dbPortEnv := os.Getenv("DB_PORT"); dbPortEnv != "" {
