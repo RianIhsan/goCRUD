@@ -12,11 +12,10 @@ import (
 )
 
 func main() {
+	database.ConnectDB()
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Tidak bisa memuat file .env")
 	}
-
-	database.ConnectDB()
 
 	port := os.Getenv("PORT")
 
