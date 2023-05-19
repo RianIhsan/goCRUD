@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func allRoute(app *fiber.App) {
+func RunRoute(app *fiber.App) {
 	app.Get("/api/reads", controllers.Reads)
 	app.Get("/api/read/:id", controllers.Read)
 	app.Post("/api/create", controllers.Create)
