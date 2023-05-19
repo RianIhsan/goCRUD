@@ -7,7 +7,6 @@ import (
 )
 
 func Reads(c *fiber.Ctx) error {
-	c.Set("Access-Control-Allow-Origin", "https://fscrud.netlify.app")
 	var user []models.User
 
 	database.DB.Find(&user)

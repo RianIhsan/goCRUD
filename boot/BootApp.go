@@ -24,8 +24,8 @@ func BootApp() {
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     config.AllowOrigins,
-		AllowHeaders:     config.AllowHeaders,
-		AllowCredentials: config.AllowCredentials,
+		AllowHeaders:     "",
+		AllowCredentials: true,
 	}))
 
 	//Initialize Route
