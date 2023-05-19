@@ -21,8 +21,7 @@ func ConnectDB() {
 		fmt.Println("Telah terkoneksi ke database")
 	}
 
-	database.AutoMigrate(&models.User{})
-
 	DB = database
+	database.AutoMigrate(&models.User{})
 
 }
