@@ -2,7 +2,6 @@ package boot
 
 import (
 	"log"
-	"os"
 
 	"github.com/RianIhsan/ex-go-crud-icc/config"
 	"github.com/RianIhsan/ex-go-crud-icc/routes"
@@ -15,11 +14,6 @@ func BootApp() {
 	//LOAD ENV FILE
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Gagal memuat file ENV")
-	}
-
-	//Check Default PORT SERVER
-	if portEnv := os.Getenv("PORT"); portEnv != "" {
-		config.PORT = portEnv
 	}
 
 	config.BootDatabase()
@@ -38,6 +32,6 @@ func BootApp() {
 	routes.SetupRoute(app)
 
 	//Initialize Server
-	app.Listen(config.PORT)
+	app.Listen(":8000")
 
 }
