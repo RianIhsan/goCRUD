@@ -73,27 +73,25 @@ func Create(c *fiber.Ctx) error {
 func Update(c *fiber.Ctx) error {
 
 	userUpdate := new(models.UserReq)
-
+  userId := c.Params("id")
 	if err := c.BodyParser(userUpdate); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Error body parse update",
 		})
 	}
   user := models.User{}
-	userId := c.Params("id")
-	
+	user.Nama = userUpdate.Nama
+  user.Kelas = userUpdate.Kelas
+  user.Semester = userUpdate.Semester
+  user.Prodi = userUpdate.Prodi
+  user.Wa = userUpdate.Wa
 
 	if err := database.DB.First(&user, "id = ? ", userId); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Data user tidak ditemuakn",
 		})
 	}
-
-	user.Nama = userUpdate.Nama
-	user.Kelas = userUpdate.Kelas
-	user.Semester = userUpdate.Semester
-	user.Prodi = userUpdate.Prodi
-	user.Wa = userUpdate.Wa
+  
 
 	if err := database.DB.Save(&user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
