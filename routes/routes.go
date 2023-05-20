@@ -9,6 +9,6 @@ func RunRoute(app *fiber.App) {
 	app.Get("/api/reads", controllers.Reads)
 	app.Get("/api/read/:id", controllers.Read)
 	app.Post("/api/create", controllers.Create)
-	app.Patch("/api/update/:id", controllers.Update)
+	app.Put("/api/update/:id", controllers.Update)
 	app.Delete("/api/delete/:id", controllers.Delete)
 }
