@@ -85,13 +85,22 @@ func Update(c *fiber.Ctx) error {
     })
   }
 
-  updateUser := models.User{
-    Nama: user.Nama,
-    Kelas: user.Kelas,
-    Semester: user.Semester,
-    Prodi: user.Semester,
-    Wa: user.Wa,
+
+
+  updateUser := models.User{}
+
+  if err := database.DB.First(&updateUser, "id = ?", id).Error; err != nil {
+    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+      "message":"User Tidak ada",
+    })
   }
+
+  updateUser.Nama = user.Nama
+  updateUser.Kelas = user.Kelas
+  updateUser.Semester = user.Semester
+  updateUser.Prodi = user.Prodi
+  updateUser.Wa = user.Wa
+
 
   if err := database.DB.Model(&updateUser).Error; err != nil {
     return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
