@@ -78,10 +78,10 @@ func Update(c *fiber.Ctx) error {
   }
 
   id := c.Params("id")
-
-  if id == "" {
+  
+  if id == ""{
     return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-      "message":"ID Tidak boleh kosong",
+      "message":"Id Tidak boleh koseng",
     })
   }
 
@@ -89,25 +89,31 @@ func Update(c *fiber.Ctx) error {
     Nama: user.Nama,
     Kelas: user.Kelas,
     Semester: user.Semester,
-    Prodi: user.Prodi,
+    Prodi: user.Semester,
     Wa: user.Wa,
   }
 
-  if err := database.DB.Model(&updateUser); err != nil {
+  if err := database.DB.Model(&updateUser).Error; err != nil {
     return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-      "message":"Error ID",
+      "message":"ERROR ID",
     })
   }
 
-
-  if database.DB.Where("id = ?", id).Updates(&updateUser).RowsAffected == 0 {
+  result := database.DB.Where("id = ?", id).Updates(&updateUser)
+  if result.Error != nil {
     return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-      "message":"Tidak dapat mengupdate user",
+      "message":"Tidak Bisa mendapatkan user",
+    })
+  }
+
+  if result.RowsAffected == 0 {
+    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+      "message":"Tidak ada data yang diubah",
     })
   }
 
   return c.Status(fiber.StatusOK).JSON(fiber.Map{
-    "message":"Data berhasil di update",
+    "message":"Data berhasil diubah",
     "data":updateUser,
   })
 }
