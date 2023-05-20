@@ -79,9 +79,9 @@ func Update(c *fiber.Ctx) error {
 			"message": "Error body parse update",
 		})
 	}
-
+  user := models.User{}
 	userId := c.Params("id")
-	user := models.User{}
+	
 
 	if err := database.DB.First(&user, "id = ? ", userId); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
