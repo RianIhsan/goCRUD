@@ -93,7 +93,14 @@ func Update(c *fiber.Ctx) error {
     Wa: user.Wa,
   }
 
-  if database.DB.Model(&updateUser).Where("id = ?", id).Updates(&updateUser).RowsAffected == 0 {
+  if err := database.DB.Model(&updateUser); err != nil {
+    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+      "message":"Error ID",
+    })
+  }
+
+
+  if database.DB.Where("id = ?", id).Updates(&updateUser).RowsAffected == 0 {
     return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
       "message":"Tidak dapat mengupdate user",
     })
