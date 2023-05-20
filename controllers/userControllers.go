@@ -95,7 +95,7 @@ func Update(c *fiber.Ctx) error {
 	user.Prodi = userUpdate.Prodi
 	user.Wa = userUpdate.Wa
 
-	if err := database.DB.Save(user).Error; err != nil {
+	if err := database.DB.Save(&user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Data gagal di simpan",
 		})
