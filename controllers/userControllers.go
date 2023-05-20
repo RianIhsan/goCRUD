@@ -71,38 +71,38 @@ func Create(c *fiber.Ctx) error {
 }
 
 func Update(c *fiber.Ctx) error {
+  user := new(models.UserReq)
 
-	userUpdate := new(models.UserReq)
-  userId := c.Params("id")
-	if err := c.BodyParser(userUpdate); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Error body parse update",
-		})
-	}
-  user := models.User{}
-	user.Nama = userUpdate.Nama
-  user.Kelas = userUpdate.Kelas
-  user.Semester = userUpdate.Semester
-  user.Prodi = userUpdate.Prodi
-  user.Wa = userUpdate.Wa
+  if err := c.BodyParser(&user); err != nil {
+    return err
+  }
 
-	if err := database.DB.First(&user, "id = ? ", userId); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Data user tidak ditemuakn",
-		})
-	}
-  
+  id := c.Params("id")
 
-	if err := database.DB.Save(&user).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Data gagal di simpan",
-		})
-	}
+  if id == "" {
+    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+      "message":"ID Tidak boleh kosong",
+    })
+  }
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "Data berhasil diupdate",
-		"data":    user,
-	})
+  updateUser := models.User{
+    Nama: user.Nama,
+    Kelas: user.Kelas,
+    Semester: user.Semester,
+    Prodi: user.Prodi,
+    Wa: user.Wa,
+  }
+
+  if database.DB.Model(&updateUser).Where("id = ?", id).Updates(&updateUser).RowsAffected == 0 {
+    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+      "message":"Tidak dapat mengupdate user",
+    })
+  }
+
+  return c.Status(fiber.StatusOK).JSON(fiber.Map{
+    "message":"Data berhasil di update",
+    "data":updateUser,
+  })
 }
 
 func Delete(c *fiber.Ctx) error {
