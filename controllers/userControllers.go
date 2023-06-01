@@ -19,7 +19,7 @@ func Reads(c *fiber.Ctx) error {
 }
 
 func Read(c *fiber.Ctx) error {
-
+	c.Set("Access-Control-Allow-Origin", "*")
 	var user models.User
 
 	userId := c.Params("id")
@@ -42,7 +42,7 @@ func Read(c *fiber.Ctx) error {
 }
 
 func Create(c *fiber.Ctx) error {
-
+	c.Set("Access-Control-Allow-Origin", "*")
 	var userReq models.UserReq
 
 	if err := c.BodyParser(&userReq); err != nil {
@@ -71,6 +71,7 @@ func Create(c *fiber.Ctx) error {
 }
 
 func Update(c *fiber.Ctx) error {
+  c.Set("Access-Control-Allow-Origin", "*")
   user := new(models.UserReq)
 
   if err := c.BodyParser(&user); err != nil {
@@ -128,7 +129,7 @@ func Update(c *fiber.Ctx) error {
 }
 
 func Delete(c *fiber.Ctx) error {
-
+	c.Set("Access-Control-Allow-Origin", "*")
 	user := models.User{}
 
 	userId := c.Params("id")
